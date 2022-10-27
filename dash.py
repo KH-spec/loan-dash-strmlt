@@ -26,7 +26,7 @@ API_URL = "https://streamlit-loan.herokuapp.com/"
 
 # loading the saved models
 
-scoring_credit_model = pickle.load(open('D:/Projet_Classrooms/Projet_07/Nouveau dossier/scoring_credit_model.sav', 'rb'))
+scoring_credit_model = pickle.load(open('https://github.com/KH-spec/Loan-dashboard-using-Streamlit-on-Heroku/blob/main/scoring_credit_model.sav', 'rb'))
 
 
 
