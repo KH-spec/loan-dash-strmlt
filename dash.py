@@ -8,7 +8,21 @@ Created on Sun May 22 11:53:51 2022
 import pickle
 import streamlit as st
 from streamlit_option_menu import option_menu
+import requests
+import json
+from pandas import json_normalize
+import pandas as pd
+import plotly.graph_objects as go
+import seaborn as sns
+import shap
+from shap.plots import waterfall
+import matplotlib.pyplot as plt
 
+# ----------------------------------------------------
+# main function
+# ----------------------------------------------------
+
+API_URL = "https://streamlit-loan.herokuapp.com/"
 
 # loading the saved models
 
@@ -18,15 +32,4 @@ scoring_credit_model = pickle.load(open('D:/Projet_Classrooms/Projet_07/Nouveau 
 
 
 
-# sidebar for navigation
-with st.sidebar:
-    
-    selected = option_menu('Multiple Disease Prediction System',
-                          
-                          ['Diabetes Prediction',
-                           'Heart Disease Prediction',
-                           'Parkinsons Prediction'],
-                          icons=['activity','heart','person'],
-                          default_index=0)
-    
-    
+
