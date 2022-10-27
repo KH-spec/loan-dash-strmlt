@@ -1,4 +1,7 @@
-# Deploying-Machine-Learning-loan-dashboard-using-Streamlit-on-Heroku
+#dashboard-loan
+
+Deploying-Machine-Learning-loan-dashboard-using-Streamlit-on-Heroku
+
 Implémentez un modèle de scoring
 
 Déploiement d'un dashboard interrogeant un modèle de scoring (OC:DS:Projet7)
