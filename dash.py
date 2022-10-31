@@ -55,9 +55,9 @@ def request_prediction(model_uri, data):
     
  
 def main():
-    #API_URL = "https://streamlit-loan.herokuapp.com/"
+    API_URL = "https://streamlit-loan.herokuapp.com/"
 
-    MLFLOW_URI = 'http://127.0.0.1:5000/invocations'
+    #MLFLOW_URI = 'http://127.0.0.1:5000/invocations'
     
     api_choice = st.sidebar.selectbox(
         'Quelle API souhaitez vous utiliser',
