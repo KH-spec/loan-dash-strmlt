@@ -9,7 +9,7 @@ streamlit==1.14.0
 protobuf==3.19.4
 numpy==1.22.3
 sklearn
-pickle
+pickle-mixin==1.0.2
 joblib ==1.1.1
 mlflow ==1.30.0
 cffi==1.15.0
