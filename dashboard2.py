@@ -57,12 +57,12 @@ def main():
         # -----------------------------------------------------------------------------------------------
         # Data loading
         # -------------
-        X_test            = pd.read_csv('X_test.csv')
-        X_train           = pd.read_csv('X_train.csv')
+        X_test            = pd.read_csv('X_test_sample.csv')
+        X_train           = pd.read_csv('X_train_sample.csv')
         y_test            = pd.read_csv('y_test.csv')
         y_train           = pd.read_csv('y_train.csv')
-        expected_values_  = pkl.load(open('expected_value.pkl', 'rb'))
-        shap_values_      = pkl.load(open('shap_vals.pkl', 'rb'))
+        expected_values_  = pkl.load(open('expected_value_smpl.pkl', 'rb'))
+        shap_values_      = pkl.load(open('shap_vals_smpl.pkl', 'rb'))
         
         return model, threshold, X_test, X_train, y_test, y_train, shap_values_,expected_values_
         
