@@ -1,10 +1,10 @@
 import pandas as pd
 import streamlit as st
-import requests
-import json
+#import requests
+#import json
 #from pandas import json_normalize
 import pickle as pkl
-import joblib
+#import joblib
 import plotly.graph_objects as go
 import seaborn as sns
 import shap
@@ -52,8 +52,8 @@ def main():
         # -----------------------------------------------------------------------------------------------
         # Model and threshold loading 
         # ---------------------------
-        model     = joblib.load(open("scoring_credit_model.pkl","rb")) 
-        threshold = joblib.load('threshold_model.pkl',"rb")
+        model     = pkl.load(open("scoring_credit_model.pkl","rb")) 
+        threshold = pkl.load('threshold_model.pkl',"rb")
         # -----------------------------------------------------------------------------------------------
         # Data loading
         # -------------
