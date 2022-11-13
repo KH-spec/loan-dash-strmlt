@@ -234,7 +234,7 @@ def main():
         figure = gauge_plot(prob, threshold_model)
         st.write(figure)
         # Add markdown
-        st.markdown("""<h2 style='text-align: center; color: black;'>Gauge meter plot for the applicant customer</h2>""", unsafe_allow_html=True)
+        st.markdown("""<h2 style='text-align: center; color: brightblue;'>Gauge meter plot for the applicant customer</h2>""", unsafe_allow_html=True)
         
     #if st.checkbox('Classification model infos'):
         expander = st.expander("Classification model infos")
