@@ -244,7 +244,7 @@ def main():
                         the loan is not guaranteed")
         
         if st.checkbox("Global Feature Importance:"):
-            st.markdown("""<h4 style='text-align: center; color: black;'>Global Feature Importance</h4>""", unsafe_allow_html=True)
+            st.markdown("""<h4 style='text-align: center; color: lightgreen;'>Global Feature Importance</h4>""", unsafe_allow_html=True)
             feat_imp = send_feat_imp().head(20)
             fig, ax = plt.subplots(figsize=(10,8))
             ax = feat_imp.plot(x= 'features',kind = 'bar',color = 'red',figsize=(12,6))
@@ -252,7 +252,7 @@ def main():
             plt.yticks(rotation=0,fontsize=10)
             plt.grid(True, color='grey', dashes=(5,2,1,2))
             st.pyplot(fig) 
-            st.markdown("""<h4 style='text-align: center; color: black;'>SHAP Summary Plot</h4>""", unsafe_allow_html=True)
+            st.markdown("""<h4 style='text-align: center; color: lightgreen;'>SHAP Summary Plot</h4>""", unsafe_allow_html=True)
             
             #if st.sidebar.checkbox('SHAP Summary Plot'):
             fig2, ax2 = plt.subplots(figsize=(10,8))
@@ -268,14 +268,14 @@ def main():
                 fig2, ax = plt.subplots(figsize=(10,8))
                 choice = st.selectbox('Select Shap presentation', ['Selected Id','All Id'])
                 if choice =='Selected Id':
-                    st.markdown("""<h4 style='text-align: center; color: black;'>SHAP Density Scatter Impact On Selected Id </h4>""", unsafe_allow_html=True)
+                    st.markdown("""<h4 style='text-align: center; color: lightgreen;'>SHAP Density Scatter Impact On Selected Id </h4>""", unsafe_allow_html=True)
                     ax = shap.summary_plot(shap_vals[1],features=X_test.iloc[[selected_id]], feature_names=features,max_display=nb_features, # nb of displayed features
                                         show=False, color=plt.get_cmap("tab10"))
                     plt.gcf()
                     plt.show()
                     st.pyplot(fig2)
                 elif choice=='All Id':
-                    st.markdown("""<h4 style='text-align: center; color: black;'>SHAP Density Scatter Impact Model Output </h4>""", unsafe_allow_html=True)
+                    st.markdown("""<h4 style='text-align: center; color: lightgreen;'>SHAP Density Scatter Impact Model Output </h4>""", unsafe_allow_html=True)
                     ax = shap.summary_plot(shap_values_[1],X_test, feature_names=features,max_display=nb_features, # nb of displayed features
                                         show=False, color=plt.get_cmap("tab10"))
                     plt.gcf()
@@ -284,7 +284,7 @@ def main():
                 # Add markdown
                 if st.checkbox("SHAP waterfall Plot"):
                     nb_features_ = st.slider("Number of features to display",min_value=2,max_value=50,value=10,step=None,format=None,key=4)
-                    st.markdown("""<h4 style='text-align: center; color: black;'>SHAP waterfall Plot for the applicant customer</h4>""", unsafe_allow_html=True)
+                    st.markdown("""<h4 style='text-align: center; color: lightgreen;'>SHAP waterfall Plot for the applicant customer</h4>""", unsafe_allow_html=True)
                     #if st.sidebar.checkbox('SHAP Summary Plot'):
                     fig, ax = plt.subplots(figsize=(10,8))
                     #ax = shap.plots.waterfall(shap_values_[1], )
@@ -298,7 +298,7 @@ def main():
                 
                 if st.checkbox("SHAP Decision Plots"):
                     nb_features__ = st.slider("Number of features to display",min_value=2,max_value=50,value=10,step=None,format=None,key=5)
-                    st.markdown("""<h4 style='text-align: center; color: black;'>SHAP Decision Plots</h4>""", unsafe_allow_html=True)
+                    st.markdown("""<h4 style='text-align: center; color: lightgreen;'>SHAP Decision Plots</h4>""", unsafe_allow_html=True)
                     fig, ax = plt.subplots(figsize=(10,8))
                     ax = shap.decision_plot(expected_vals[0],shap_vals[1][0],feature_names=list(features),feature_display_range=slice(None, -1-nb_features__ , -1))
                     st.pyplot(fig)
@@ -357,7 +357,7 @@ def main():
                                                                      var_name="variables",  # "variables",
                                                                      value_name="values")
                                                                      
-                st.markdown("""<h4 style='text-align: center; color: black;'>Boxplots Of The Main Features </h4>""", unsafe_allow_html=True)
+                st.markdown("""<h4 style='text-align: center; color: lightgreen;'>Boxplots Of The Main Features </h4>""", unsafe_allow_html=True)
                 
                 sns.boxplot(data=df_melt_thousand_neigh, x='variables', y='values',
                 hue='TARGET', linewidth=1, width=0.4,
@@ -404,7 +404,7 @@ def main():
 
                 plt.xticks(rotation=20, ha='right')
                 plt.show()
-                st.markdown("""<h6 style='text-align: center; color: black;'>Distribution Of Features By Class And the 20 nearest neighbors of applicant customer</h6>""", unsafe_allow_html=True)
+                st.markdown("""<h6 style='text-align: center; color: lightgreen;'>Distribution Of Features By Class And the 20 nearest neighbors of applicant customer</h6>""", unsafe_allow_html=True)
                 
 
                 expander = st.expander("Dispersion Graph")
