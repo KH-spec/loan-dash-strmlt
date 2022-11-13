@@ -1,7 +1,5 @@
 import pandas as pd
 import streamlit as st
-#import requests
-#import json
 #from pandas import json_normalize
 import pickle as pkl
 import joblib
@@ -27,13 +25,13 @@ def main():
     #st.set_page_config(page_icon='ðŸ§Š',layout='centered',initial_sidebar_state='auto')
     
     # Display the title
-    st.markdown("""<div style="background-color: lightgreen; padding:10px; border-radius:10px">
+    st.markdown("""<div style="background-color: Lime; padding:10px; border-radius:10px">
     <h1 style='text-align: center; color: black;'>LOAN APP SCORING DASHBOARD</h1></div>
-    <h2 style='text-align: center; color: brightgreen;'>KHAYREDDINE ROUIBAH.DS</h2>""", unsafe_allow_html=True)
+    <h2 style='text-align: center; color: Lime;'>KHAYREDDINE ROUIBAH.DS</h2>""", unsafe_allow_html=True)
     #---------------------------------------------------------------------------------------------
     # Display the LOGO
     img = Image.open("logo.png")
-    st.sidebar.image(img, width=250)
+    st.sidebar.image(img, width=300)
     
     # Display the loan image
     col1, col2, col3 = st.columns(3)
@@ -89,7 +87,7 @@ def main():
         if scor >= th:
             couleur_delta = 'red'
         elif scor < th:
-            couleur_delta = 'Orange'
+            couleur_delta = '#FFFF00'
 
         if scor >= th:
             valeur_delta = "red"
@@ -104,19 +102,19 @@ def main():
             delta={'reference': int(th), 'increasing': {'color': valeur_delta}},
             gauge={
                 'axis': {'range': [None, int(100)], 'tickwidth': 1.5, 'tickcolor': "black"},
-                'bar': {'color': "darkblue"},
+                'bar': {'color': "#2E00FF"},
                 'bgcolor': "white",
                 'borderwidth': 2,
-                'bordercolor': "gray",
+                'bordercolor': "black",
                 'steps': [
-                    {'range': [0, int(th)], 'color': 'lightgreen'},
+                    {'range': [0, int(th)], 'color': 'Lime'},
                     {'range': [int(th), int(scor)], 'color': couleur_delta}],
                 'threshold': {
                     'line': {'color': "red", 'width': 4},
                     'thickness': 1,
                     'value': int(th)}}))
 
-        fig.update_layout(paper_bgcolor="lavender", font={'color': "darkblue", 'family': "Arial"})
+        fig.update_layout(paper_bgcolor="#BFFFFC", font={'color': "darkblue", 'family': "Arial"})
         return fig
     @st.cache
     def get_df_neigh(selected_id_customer):
@@ -226,7 +224,7 @@ def main():
         if prob >= threshold_model:
             st.markdown("""<h2 style='text-align: center; color: red;'>Decision : Loan rejected</h2>""", unsafe_allow_html=True)
         else:
-            st.markdown("""<h2 style='text-align: center; color: lightgreen;'>Decision : Loan granted</h2>""", unsafe_allow_html=True)
+            st.markdown("""<h2 style='text-align: center; color: Lime;'>Decision : Loan granted</h2>""", unsafe_allow_html=True)
 
         #----------------------------------------------------------------------------------
         #              Display customer's gauge meter chart (checkbox)
@@ -234,7 +232,7 @@ def main():
         figure = gauge_plot(prob, threshold_model)
         st.write(figure)
         # Add markdown
-        st.markdown("""<h2 style='text-align: center; color: brightblue;'>Gauge meter plot for the applicant customer</h2>""", unsafe_allow_html=True)
+        st.markdown("""<h2 style='text-align: center; color: Lime;'>Gauge meter plot for the applicant customer</h2>""", unsafe_allow_html=True)
         
     #if st.checkbox('Classification model infos'):
         expander = st.expander("Classification model infos")
@@ -244,7 +242,7 @@ def main():
                         the loan is not guaranteed")
         
         if st.checkbox("Global Feature Importance:"):
-            st.markdown("""<h4 style='text-align: center; color: lightgreen;'>Global Feature Importance</h4>""", unsafe_allow_html=True)
+            st.markdown("""<h4 style='text-align: center; color: Lime;'>Global Feature Importance</h4>""", unsafe_allow_html=True)
             feat_imp = send_feat_imp().head(20)
             fig, ax = plt.subplots(figsize=(10,8))
             ax = feat_imp.plot(x= 'features',kind = 'bar',color = 'red',figsize=(12,6))
@@ -252,7 +250,7 @@ def main():
             plt.yticks(rotation=0,fontsize=10)
             plt.grid(True, color='grey', dashes=(5,2,1,2))
             st.pyplot(fig) 
-            st.markdown("""<h4 style='text-align: center; color: lightgreen;'>SHAP Summary Plot</h4>""", unsafe_allow_html=True)
+            st.markdown("""<h4 style='text-align: center; color: Lime;'>SHAP Summary Plot</h4>""", unsafe_allow_html=True)
             
             #if st.sidebar.checkbox('SHAP Summary Plot'):
             fig2, ax2 = plt.subplots(figsize=(10,8))
@@ -268,14 +266,15 @@ def main():
                 fig2, ax = plt.subplots(figsize=(10,8))
                 choice = st.selectbox('Select Shap presentation', ['Selected Id','All Id'])
                 if choice =='Selected Id':
-                    st.markdown("""<h4 style='text-align: center; color: lightgreen;'>SHAP Density Scatter Impact On Selected Id </h4>""", unsafe_allow_html=True)
+                    
+                    st.markdown("""<h4 style='text-align: center; color: Lime;'>SHAP Density Scatter Impact On Selected Id </h4>""", unsafe_allow_html=True)
                     ax = shap.summary_plot(shap_vals[1],features=X_test.iloc[[selected_id]], feature_names=features,max_display=nb_features, # nb of displayed features
                                         show=False, color=plt.get_cmap("tab10"))
                     plt.gcf()
                     plt.show()
                     st.pyplot(fig2)
                 elif choice=='All Id':
-                    st.markdown("""<h4 style='text-align: center; color: lightgreen;'>SHAP Density Scatter Impact Model Output </h4>""", unsafe_allow_html=True)
+                    st.markdown("""<h4 style='text-align: center; color: Lime;'>SHAP Density Scatter Impact Model Output </h4>""", unsafe_allow_html=True)
                     ax = shap.summary_plot(shap_values_[1],X_test, feature_names=features,max_display=nb_features, # nb of displayed features
                                         show=False, color=plt.get_cmap("tab10"))
                     plt.gcf()
@@ -284,7 +283,7 @@ def main():
                 # Add markdown
                 if st.checkbox("SHAP waterfall Plot"):
                     nb_features_ = st.slider("Number of features to display",min_value=2,max_value=50,value=10,step=None,format=None,key=4)
-                    st.markdown("""<h4 style='text-align: center; color: lightgreen;'>SHAP waterfall Plot for the applicant customer</h4>""", unsafe_allow_html=True)
+                    st.markdown("""<h4 style='text-align: center; color: Lime;'>SHAP waterfall Plot for the applicant customer</h4>""", unsafe_allow_html=True)
                     #if st.sidebar.checkbox('SHAP Summary Plot'):
                     fig, ax = plt.subplots(figsize=(10,8))
                     #ax = shap.plots.waterfall(shap_values_[1], )
@@ -298,7 +297,7 @@ def main():
                 
                 if st.checkbox("SHAP Decision Plots"):
                     nb_features__ = st.slider("Number of features to display",min_value=2,max_value=50,value=10,step=None,format=None,key=5)
-                    st.markdown("""<h4 style='text-align: center; color: lightgreen;'>SHAP Decision Plots</h4>""", unsafe_allow_html=True)
+                    st.markdown("""<h4 style='text-align: center; color: Lime;'>SHAP Decision Plots</h4>""", unsafe_allow_html=True)
                     fig, ax = plt.subplots(figsize=(10,8))
                     ax = shap.decision_plot(expected_vals[0],shap_vals[1][0],feature_names=list(features),feature_display_range=slice(None, -1-nb_features__ , -1))
                     st.pyplot(fig)
@@ -357,11 +356,10 @@ def main():
                                                                      var_name="variables",  # "variables",
                                                                      value_name="values")
                                                                      
-                st.markdown("""<h4 style='text-align: center; color: lightgreen;'>Boxplots Of The Main Features </h4>""", unsafe_allow_html=True)
-                
+                st.markdown("""<h4 style='text-align: center; color: Lime;'>Boxplots Of The Main Features </h4>""", unsafe_allow_html=True)
+                sns.set_palette("bright")
                 sns.boxplot(data=df_melt_thousand_neigh, x='variables', y='values',
-                hue='TARGET', linewidth=1, width=0.4,
-                palette=['tab:green', 'tab:red'], showfliers=False,
+                hue='TARGET', linewidth=1, width=0.4, showfliers=False,
                 saturation=0.5, ax=ax)
                 
                     # ------------------------------
@@ -404,7 +402,7 @@ def main():
 
                 plt.xticks(rotation=20, ha='right')
                 plt.show()
-                st.markdown("""<h6 style='text-align: center; color: lightgreen;'>Distribution Of Features By Class And the 20 nearest neighbors of applicant customer</h6>""", unsafe_allow_html=True)
+                st.markdown("""<h6 style='text-align: center; color: Lime;'>Distribution Of Features By Class And the 20 nearest neighbors of applicant customer</h6>""", unsafe_allow_html=True)
                 
 
                 expander = st.expander("Dispersion Graph")
