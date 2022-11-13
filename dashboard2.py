@@ -29,7 +29,7 @@ def main():
     # Display the title
     st.markdown("""<div style="background-color: lightgreen; padding:10px; border-radius:10px">
     <h1 style='text-align: center; color: black;'>LOAN APP SCORING DASHBOARD</h1></div>
-    <h2 style='text-align: center; color: lightgreen;'>KHAYREDDINE ROUIBAH.DS</h2>""", unsafe_allow_html=True)
+    <h2 style='text-align: center; color: brightgreen;'>KHAYREDDINE ROUIBAH.DS</h2>""", unsafe_allow_html=True)
     #---------------------------------------------------------------------------------------------
     # Display the LOGO
     img = Image.open("logo.png")
