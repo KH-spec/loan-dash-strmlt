@@ -1,8 +1,10 @@
 import pandas as pd
 import streamlit as st
-#from pandas import json_normalize
+import requests
+from pandas import json_normalize
+import json
+import numpy 
 import pickle as pkl
-import joblib
 import plotly.graph_objects as go
 import seaborn as sns
 import shap
@@ -16,10 +18,12 @@ from sklearn.neighbors import NearestNeighbors
 def main():
 
     
-    # -------------------------------------------------------------------------------------------------
+    # --------------------------------------------------------------------------------------------------
+    #                          Display title
+    # --------------------------------------------------------------------------------------------------
    
     #MLFLOW_URI = 'http://192.168.1.86:8501'
-    #API_URL ='http://127.0.0.1:5000'
+    API_URL = "http://127.0.0.1:5000/app/"
     
     #api_choice = st.sidebar.selectbox('Quelle API souhaitez vous utiliser',['','MLflow'])
     #st.set_page_config(page_icon='ðŸ§Š',layout='centered',initial_sidebar_state='auto')
@@ -28,7 +32,10 @@ def main():
     st.markdown("""<div style="background-color: Lime; padding:10px; border-radius:10px">
     <h1 style='text-align: center; color: black;'>LOAN APP SCORING DASHBOARD</h1></div>
     <h2 style='text-align: center; color: Lime;'>KHAYREDDINE ROUIBAH.DS</h2>""", unsafe_allow_html=True)
-    #---------------------------------------------------------------------------------------------
+    # --------------------------------------------------------------------------------------------------
+    #                          Display the LOGO and background-color
+    # --------------------------------------------------------------------------------------------------
+    
     # Display the LOGO
     img = Image.open("logo.png")
     st.sidebar.image(img, width=300)
@@ -40,45 +47,102 @@ def main():
     with col1:
         st.image(img, width=700)
     
-    # --------------------------------------------------------------------------------------------
-    #                          Selected id
-    # --------------------------------------------------------------------------------------------
+    # --------------------------------------------------------------------------------------------------
+    #                          list of ids customers
+    # --------------------------------------------------------------------------------------------------
     @st.cache
-    def data_load():
-        # -----------------------------------------------------------------------------------------------
-        #                                   loadings
-        # -----------------------------------------------------------------------------------------------
-        # Model and threshold loading 
-        # ---------------------------
-        model     = joblib.load(open("scoring_credit_model.pkl","rb")) 
-        threshold = joblib.load('threshold_model.pkl',"rb")
-        # -----------------------------------------------------------------------------------------------
-        # Data loading
-        # -------------
-        X_test            = pd.read_csv('X_test_sample.csv')
-        X_train           = pd.read_csv('X_train_sample.csv')
-        y_test            = pd.read_csv('y_test.csv')
-        y_train           = pd.read_csv('y_train.csv')
-        expected_values_  = pkl.load(open('expected_value_smpl.pkl', 'rb'))
-        shap_values_      = pkl.load(open('shap_vals_smpl.pkl', 'rb'))
+    def get_all_data():
+        # URL of the sk_id API
+        data_api_url = API_URL + "all_data/"
+        # Requesting the API and saving the response
+        response = requests.get(data_api_url)
+        # Convert from JSON format to Python dict
+        content = json.loads(response.content.decode('utf-8'))  #
+        # pd.DataFrame(content['shap_val_cust'].values())
+        X_test = pd.DataFrame(content['X_test'])  # Results contain the required data
+        y_test = pd.Series(content['y_test'])  # Results contain the required data
         
-        return model, threshold, X_test, X_train, y_test, y_train, shap_values_,expected_values_
+        return X_test, y_test
         
-    @st.cache
+    X_test, y_test = get_all_data()
+    # --------------------------------------------------------------------------------------------------
+    #                          list of ids customers
+    # --------------------------------------------------------------------------------------------------    
+    #local test api : http://127.0.0.1:5000/app/id/
+    @st.cache    
     def get_id_list():
-        # Extract list of all the 'SK_ID_CURR' ids in the X_test dataframe
-        customers_id_list = pd.Series(list(X_test.index.sort_values()))  # X_test
-        return customers_id_list
+        # URL of the sk_id API
+        id_api_url = API_URL + "id/"
+        # Requesting the API and saving the response
+        response = requests.get(id_api_url)
+        # Convert from JSON format to Python dict
+        content = json.loads(response.content)
+        # Getting the values of "ID" from the content
+        id_customers = pd.Series(content['data']).values
+        return id_customers
+        
+    # --------------------------------------------------------------------------------------------------
+    #                          Selected cust_data
+    # --------------------------------------------------------------------------------------------------
+    
+    #local test api : http://127.0.0.1:5000/app/data_cust/?ID=0
     @st.cache
     def get_selected_cust_data(selected_id):
-        #selected_id = int(request.args.get('SK_ID_CURR'))
-        x_custom   = X_test.iloc[[selected_id]]  # X_test
-        y_custom   = y_test.iloc[[selected_id]] # y_test
-        return x_custom, y_custom
+        # URL of the sk_id API
+        data_api_url = API_URL + "data_cust/?ID=" + str(selected_id)
+        # Requesting the API and saving the response
+        response = requests.get(data_api_url)
+        # Convert from JSON format to Python dict
+        content = json.loads(response.content.decode('utf-8'))
+        x_custom = pd.DataFrame(content['data'])
+        # x_cust = json_normalize(content['data'])
+        y_customer = (pd.Series(content['y_cust']).rename('TARGET'))
+        # y_customer = json_normalize(content['y_cust'].rename('TARGET'))
+        return x_custom, y_customer
+        
+    # --------------------------------------------------------------------------------------------------
+    #                          Get list of features names
+    # --------------------------------------------------------------------------------------------------
+    # Get list of feature names
+    #local test api : http://127.0.0.1:5000/app/feat/
     @st.cache
-    def send_feat_imp():
-        feat_imp = pd.Series(model.feature_importances_, index=X_test.columns).sort_values(ascending=False)
+    def feat():
+        # URL of the sk_id API
+        feat_api_url = API_URL + "feat/"
+        # Requesting the API and saving the response
+        response = requests.get(feat_api_url)
+        # Convert from JSON format to Python dict
+        content = json.loads(response.content)
+        # Getting the values of "ID" from the content
+        features_name = pd.Series(content['data']).values
+        return features_name    
+        
+    # --------------------------------------------------------------------------------------------------
+    #                          Get the list of feature importances
+    # --------------------------------------------------------------------------------------------------
+    # Get the list of feature importances (according to lgbm classification model)
+    #local test api : http://127.0.0.1:5000/app/feat_imp/
+    @st.cache
+    def get_features_importances():
+        # URL of the aggregations API
+        feat_imp_api_url = API_URL + "feat_imp/"
+        # Requesting the API and save the response
+        response = requests.get(feat_imp_api_url)
+        # convert from JSON format to Python dict
+        content = json.loads(response.content.decode('utf-8'))
+        # convert back to pd.Series
+        feat_imp = pd.Series(content['data']).sort_values(ascending=False)
         return feat_imp
+        
+    # --------------------------------------------------------------------------------------------------
+    #                          Get the list of feature importances
+    # --------------------------------------------------------------------------------------------------    
+        
+     
+    # --------------------------------------------------------------------------------------------------
+    #                          gauge_plot Decision
+    # --------------------------------------------------------------------------------------------------      
+        
     @st.cache
     def gauge_plot(scor, th):     # Gauge Chart
         scor = int(scor * 100)
@@ -116,6 +180,55 @@ def main():
 
         fig.update_layout(paper_bgcolor="#BFFFFC", font={'color': "darkblue", 'family': "Arial"})
         return fig
+    # --------------------------------------------------------------------------------------------------
+    #                          Get score (cached)
+    # --------------------------------------------------------------------------------------------------
+    # Get score (cached)
+    # local test api : http://127.0.0.1:5000/app/scoring_cust/?ID=0
+    @st.cache
+    def get_score_model(selected_id):
+        # URL of the sk_id API
+        score_api_url = API_URL + "scoring_cust/?ID=" + str(selected_id)
+        # Requesting the API and saving the response
+        response = requests.get(score_api_url)
+        # Convert from JSON format to Python dict
+        content = json.loads(response.content.decode('utf-8'))
+        # Getting the values of "ID" from the content
+        score_model = (content['score'])
+        threshold = content['thresh']
+        return score_model, threshold
+    
+    # --------------------------------------------------------------------------------------------------
+    #                          Get score (cached)
+    # --------------------------------------------------------------------------------------------------
+    # Get score (cached)
+    # local test api : http://127.0.0.1:5000/app/data_train/
+    @st.cache
+    def get_data_train():
+        # URL of the sk_id API
+        score_api_url = API_URL + "data_train/"
+        # Requesting the API and saving the response
+        response = requests.get(score_api_url)
+        # Convert from JSON format to Python dict
+        content = json.loads(response.content.decode('utf-8'))
+        # Results contain the required data
+        X_train = pd.DataFrame(content['X_train'])
+        y_train = pd.DataFrame(content['y_train'])
+        return X_train, y_train
+    X_train, y_train = get_data_train()
+    # --------------------------------------------------------------------------------------------------
+    #                          Get score (cached)
+    # --------------------------------------------------------------------------------------------------
+    @st.cache
+    def data_load():
+        expected_values_  = pkl.load(open('expected_value_smpl.pkl', 'rb'))
+        shap_values_      = pkl.load(open('shap_vals_smpl.pkl', 'rb'))
+        mdl         = pkl.load(open('explainer_mdl.pkl', 'rb'))
+        return shap_values_,expected_values_,mdl
+    shap_values_,expected_values_,mdl =   data_load()  
+    # --------------------------------------------------------------------------------------------------
+    #                          Get score (cached)
+    # --------------------------------------------------------------------------------------------------
     @st.cache
     def get_df_neigh(selected_id_customer):
         # fit nearest neighbors among the selection
@@ -134,6 +247,9 @@ def main():
         x_neigh = X_train.loc[nearest_cust_idx, :]
         y_neigh = y_train.loc[nearest_cust_idx]
         return x_neigh, y_neigh   
+    # --------------------------------------------------------------------------------------------------
+    #                          Shap_value
+    # --------------------------------------------------------------------------------------------------    
     @st.cache    
     def shap_value():
         # return the nearest neighbors
@@ -142,7 +258,7 @@ def main():
         # prepare the shap values of nearest neighbors + customer
         shap.initjs()
         # creating the TreeExplainer with our model as argument
-        explainer = shap.TreeExplainer(model)  # X_train_2.sample(1000)
+        explainer = shap.TreeExplainer(mdl)  # X_train_2.sample(1000)
         # Expected values
         expected_vals = pd.Series(list(explainer.expected_value))
         # calculating the shap values of selected customer
@@ -152,13 +268,16 @@ def main():
         shap_val_neigh_ = pd.Series(list(explainer.shap_values(X_neigh)[1]))  # shap_vals[1][X_neigh.index]
 
         return expected_vals,shap_vals_cust
+    # --------------------------------------------------------------------------------------------------
+    #                          list_display_features
+    # --------------------------------------------------------------------------------------------------     
     def get_list_display_features(f, def_n, key):
         all_feat = f
         n = st.slider("Nb of features to display",
                       min_value=2, max_value=40,
                       value=def_n, step=None, format=None, key=key)
 
-        disp_cols = list(send_feat_imp().sort_values(ascending=False).iloc[:n].index)
+        disp_cols = list(get_features_importances().sort_values(ascending=False).iloc[:n].index)
 
         box_cols = st.multiselect('Choose the features to display:',sorted(all_feat), default=disp_cols)
         return box_cols
@@ -179,12 +298,13 @@ def main():
         x_thousand_neigh = X_train.loc[nearest_cust_idx, :]
         y_thousand_neigh = y_train.loc[nearest_cust_idx]
         return x_thousand_neigh, y_thousand_neigh, X_cust
+      
     # -----------------------   
     # list of customer's ID's
     # -----------------------
-    model, threshold, X_test, X_train, y_test, y_train, shap_values_,expected_values_ =   data_load() 
-    
+   
     cust_id = get_id_list()
+    
     # -----------------------
     # Selected customer's ID
     # -----------------------
@@ -202,15 +322,15 @@ def main():
     #                         Model's decision checkbox
     # --------------------------------------------------------------------------------
     # Compute the score of the customer
-    # ---------------------------------
+    # --------------------------------------------------------------------------------
     
-    # --------------------------------
+    features = feat()
+    
+    # --------------------------------------------------------------------------------
     # Probability of selected customer
-    # --------------------------------
+    # --------------------------------------------------------------------------------
     
-    features = X_train.columns
-    x_cust = X_test.iloc[[selected_id]]
-    prob = model.predict_proba(x_cust)[:, 1][0]
+    prob,threshold = get_score_model(selected_id)
     
     if st.sidebar.checkbox("Model's decision"):
         # Get score & threshold model
@@ -243,7 +363,7 @@ def main():
         
         if st.checkbox("Global Feature Importance:"):
             st.markdown("""<h4 style='text-align: center; color: Lime;'>Global Feature Importance</h4>""", unsafe_allow_html=True)
-            feat_imp = send_feat_imp().head(20)
+            feat_imp = get_features_importances().head(20)
             fig, ax = plt.subplots(figsize=(10,8))
             ax = feat_imp.plot(x= 'features',kind = 'bar',color = 'red',figsize=(12,6))
             plt.xticks(rotation=90,fontsize=10)
@@ -251,6 +371,7 @@ def main():
             plt.grid(True, color='grey', dashes=(5,2,1,2))
             st.pyplot(fig) 
             st.markdown("""<h4 style='text-align: center; color: Lime;'>SHAP Summary Plot</h4>""", unsafe_allow_html=True)
+            
             
             #if st.sidebar.checkbox('SHAP Summary Plot'):
             fig2, ax2 = plt.subplots(figsize=(10,8))
@@ -415,6 +536,7 @@ def main():
                             Values for the applicant customer are superimposed in yellow.")
             
     # ---------------------------------------------------------------------------------------
-   
+ 
+        
 if __name__ == '__main__':
     main()
