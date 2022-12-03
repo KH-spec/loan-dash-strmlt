@@ -58,7 +58,7 @@ def main():
         # Requesting the API and saving the response
         response = requests.get(data_api_url)
         # Convert from JSON format to Python dict
-        content = json.loads(response.content.decode('utf-8'))  #
+        content = json.loads(response.content)  #
         # pd.DataFrame(content['shap_val_cust'].values())
         X_test = pd.DataFrame(content['X_test'])  # Results contain the required data
         y_test = pd.Series(content['y_test'])  # Results contain the required data
