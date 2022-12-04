@@ -64,7 +64,7 @@ def main():
         y_test = pd.Series(content['y_test'])  
         
         return X_test, y_test
-    X_test, y_test = get_all_data()
+    #X_test, y_test = get_all_data()
     # --------------------------------------------------------------------------------------------------
     #                          list of ids customers
     # --------------------------------------------------------------------------------------------------    
@@ -215,7 +215,7 @@ def main():
         X_train = pd.DataFrame(content['X_train'])
         y_train = pd.DataFrame(content['y_train'])
         return X_train, y_train
-    X_train, y_train = get_data_train()
+    #X_train, y_train = get_data_train()
     # --------------------------------------------------------------------------------------------------
     #                          Get score (cached)
     # --------------------------------------------------------------------------------------------------
@@ -223,9 +223,13 @@ def main():
     def data_load():
         expected_values_  = pkl.load(open('expected_value_smpl.pkl', 'rb'))
         shap_values_      = pkl.load(open('shap_vals_smpl.pkl', 'rb'))
+        X_test            = pd.read_csv('X_test_sample.csv',encoding='utf-8')
+        X_train           = pd.read_csv('X_train_sample.csv',encoding='utf-8')
+        y_test            = pd.read_csv('y_test.csv',encoding='utf-8')
+        y_train           = pd.read_csv('y_train.csv',encoding='utf-8')
         mdl         = pkl.load(open('explainer_mdl.pkl', 'rb'))
         return shap_values_,expected_values_,mdl
-    shap_values_,expected_values_,mdl =   data_load()  
+    shap_values_,expected_values_,mdl,X_test,X_train ,y_test,y_train  =   data_load()  
     # --------------------------------------------------------------------------------------------------
     #                          Get score (cached)
     # --------------------------------------------------------------------------------------------------
