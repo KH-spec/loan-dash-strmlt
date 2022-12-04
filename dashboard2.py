@@ -24,7 +24,7 @@ def main():
    
     #MLFLOW_URI = 'http://192.168.1.86:8501'
     #API_URL = "http://127.0.0.1:5000/app/"
-    API_URL = 'https://kh-spec-loan-dashboard-using-streamlit-on-her-dashboard2-49sb10.streamlit.app/'
+    API_URL = 'https://kh-spec-loan-dash-strmlt-dashboard2-7rh01b.streamlit.app/'
     
    
     # Display the title
