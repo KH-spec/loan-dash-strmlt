@@ -24,11 +24,9 @@ def main():
    
     #MLFLOW_URI = 'http://192.168.1.86:8501'
     #API_URL = "http://127.0.0.1:5000/app/"
-    API_URL = "https://kh-spec-loan-dashboard-using-streamlit-on-her-dashboard2-49sb10.streamlit.app/"
+    API_URL = 'https://kh-spec-loan-dashboard-streamlit-dashboard2-0jqoxv.streamlit.app/app/'
     
-    #api_choice = st.sidebar.selectbox('Quelle API souhaitez vous utiliser',['','MLflow'])
-    #st.set_page_config(page_icon='ðŸ§Š',layout='centered',initial_sidebar_state='auto')
-    
+   
     # Display the title
     st.markdown("""<div style="background-color: Lime; padding:10px; border-radius:10px">
     <h1 style='text-align: center; color: black;'>LOAN APP SCORING DASHBOARD</h1></div>
