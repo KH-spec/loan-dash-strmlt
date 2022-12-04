@@ -17,10 +17,10 @@ def data_load():
     # -----------------------------------------------------------------------------------------------
     # Data loading
     # -------------
-    X_test            = pd.read_csv('X_test_sample.csv')
-    X_train           = pd.read_csv('X_train_sample.csv')
-    y_test            = pd.read_csv('y_test.csv')
-    y_train           = pd.read_csv('y_train.csv')
+    X_test            = pd.read_csv('X_test_sample.csv',encoding='utf-8')
+    X_train           = pd.read_csv('X_train_sample.csv',encoding='utf-8')
+    y_test            = pd.read_csv('y_test.csv',encoding='utf-8')
+    y_train           = pd.read_csv('y_train.csv',encoding='utf-8')
         
     return model, threshold, X_test, X_train, y_test, y_train
   
