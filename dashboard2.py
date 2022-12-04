@@ -23,8 +23,8 @@ def main():
     # --------------------------------------------------------------------------------------------------
    
     #MLFLOW_URI = 'http://192.168.1.86:8501'
-    #API_URL = "http://127.0.0.1:5000/app/"
-    API_URL = "https://kh-spec-loan-dashboard-using-streamlit-on-her-dashboard2-49sb10.streamlit.app/"
+    API_URL = "http://127.0.0.1:5000/app/"
+    #API_URL = "https://kh-spec-loan-dashboard-using-streamlit-on-her-dashboard2-49sb10.streamlit.app/"
     
     #api_choice = st.sidebar.selectbox('Quelle API souhaitez vous utiliser',['','MLflow'])
     #st.set_page_config(page_icon='ðŸ§Š',layout='centered',initial_sidebar_state='auto')
@@ -77,6 +77,7 @@ def main():
         
         return X_test, y_test
     X_test, y_test = get_all_data()
+    st.write(X_test)
     # --------------------------------------------------------------------------------------------------
     #                          list of ids customers
     # --------------------------------------------------------------------------------------------------    
