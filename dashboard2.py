@@ -228,7 +228,7 @@ def main():
         y_test            = pd.read_csv('y_test.csv',encoding='utf-8')
         y_train           = pd.read_csv('y_train.csv',encoding='utf-8')
         mdl         = pkl.load(open('explainer_mdl.pkl', 'rb'))
-        return shap_values_,expected_values_,mdl
+        return shap_values_,expected_values_,mdl,X_test,X_train ,y_test,y_train
     shap_values_,expected_values_,mdl,X_test,X_train ,y_test,y_train  =   data_load()  
     # --------------------------------------------------------------------------------------------------
     #                          Get score (cached)
