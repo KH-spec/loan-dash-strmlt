@@ -47,7 +47,7 @@ def main():
     #st.image(img, width=200)
     with col1:
         st.image(img, width=700)
-    st.session_state['answer'] = ''!
+    st.session_state['answer'] = ''
 
     st.write(st.session_state)
 
