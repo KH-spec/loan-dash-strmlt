@@ -48,8 +48,14 @@ def main():
         
     # --------------------------------------------------------------------------------------------------
     #                          list of ids customers
-    # --------------------------------------------------------------------------------------------------    
+    # --------------------------------------------------------------------------------------------------  
+    id_api_url = API_URL + "id/"
+    response = requests.get(id_api_url)
+    st.write(response)
+    content = json.loads(response.content)
+    st.write(content)
     #local test api : http://127.0.0.1:5000/app/id/
+    
     @st.cache    
     def get_id_list():
         # URL of the sk_id API
@@ -57,7 +63,7 @@ def main():
         # Requesting the API and saving the response
         response = requests.get(id_api_url)
         # Convert from JSON format to Python dict
-        st.write(response)
+        
         content = json.loads(response.content)
         # Getting the values of "ID" from the content
         id_customers = pd.Series(content['data']).values
