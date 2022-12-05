@@ -51,7 +51,7 @@ def main():
     # --------------------------------------------------------------------------------------------------
     import urllib.request
     with urllib.request.urlopen(API_URL + "all_data/") as url:
-    data = json.load(url)
+      data = json.load(url)
     
     st.write(data)
     @st.cache
