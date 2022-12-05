@@ -2,7 +2,7 @@ import pandas as pd
 import streamlit as st
 import requests
 from pandas import json_normalize
-import json
+import json,urllib
 import numpy 
 import pickle as pkl
 import plotly.graph_objects as go
@@ -13,7 +13,7 @@ from shap.plots import waterfall
 import matplotlib.pyplot as plt
 from PIL import Image
 from sklearn.neighbors import NearestNeighbors
-import codecs   
+  
  
 def main():
 
@@ -54,10 +54,9 @@ def main():
         # URL of the sk_id API
         data_api_url = API_URL + "all_data/"
         # Requesting the API and saving the response
-        response = requests.get(data_api_url)
+        response = urllib.urlopen(data_api_url)
         # Convert from JSON format to Python dict
-        datacodec = codecs.decode(response.encode(), 'utf-8-sig')
-        content = json.loads(datacodec)  #
+        content = json.loads(response.content.decode('utf-8'))  #
         # pd.DataFrame(content['shap_val_cust'].values())
         X_test = pd.DataFrame(content['X_test'])
         y_test = pd.Series(content['y_test'])  
