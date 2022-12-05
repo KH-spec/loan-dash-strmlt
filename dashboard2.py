@@ -45,6 +45,23 @@ def main():
     #st.image(img, width=200)
     with col1:
         st.image(img, width=700)
+        
+    # --------------------------------------------------------------------------------------------------
+    #                          list of ids customers
+    # --------------------------------------------------------------------------------------------------    
+    #local test api : http://127.0.0.1:5000/app/id/
+    @st.cache    
+    def get_id_list():
+        # URL of the sk_id API
+        id_api_url = API_URL + "id/"
+        # Requesting the API and saving the response
+        response = requests.get(id_api_url)
+        # Convert from JSON format to Python dict
+        content = json.loads(response.content.decode('utf-8'))
+        # Getting the values of "ID" from the content
+        id_customers = pd.Series(content['data']).values
+        return id_customers
+    cust_id = get_id_list()    
     
     # --------------------------------------------------------------------------------------------------
     #                          list of ids customers
@@ -68,22 +85,7 @@ def main():
         return X_test, y_test
     X_test, y_test = get_all_data()
     st.write(X_test)
-    # --------------------------------------------------------------------------------------------------
-    #                          list of ids customers
-    # --------------------------------------------------------------------------------------------------    
-    #local test api : http://127.0.0.1:5000/app/id/
-    @st.cache    
-    def get_id_list():
-        # URL of the sk_id API
-        id_api_url = API_URL + "id/"
-        # Requesting the API and saving the response
-        response = requests.get(id_api_url)
-        # Convert from JSON format to Python dict
-        content = json.loads(response.content.decode('utf-8'))
-        # Getting the values of "ID" from the content
-        id_customers = pd.Series(content['data']).values
-        return id_customers
-        
+    
     # --------------------------------------------------------------------------------------------------
     #                          Selected cust_data
     # --------------------------------------------------------------------------------------------------
