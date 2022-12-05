@@ -49,11 +49,10 @@ def main():
     # --------------------------------------------------------------------------------------------------
     #                          list of ids customers
     # --------------------------------------------------------------------------------------------------
-    import urllib.request
-    with urllib.request.urlopen(API_URL + "all_data/") as url:
-      data = json.load(url)
-    
-    st.write(data)
+    data_api_url = API_URL + "all_data/"
+    response = requests.get(id_api_url)
+    content = json.loads(response.content.read())  #
+    st.write(content)
     @st.cache
     def get_all_data():
         # URL of the sk_id API
