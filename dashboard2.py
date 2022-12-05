@@ -2,7 +2,7 @@ import pandas as pd
 import streamlit as st
 import requests
 from pandas import json_normalize
-import json,urllib
+import json
 import numpy 
 import pickle as pkl
 import plotly.graph_objects as go
@@ -49,12 +49,17 @@ def main():
     # --------------------------------------------------------------------------------------------------
     #                          list of ids customers
     # --------------------------------------------------------------------------------------------------
+    import urllib.request
+    with urllib.request.urlopen(API_URL + "all_data/") as url:
+    data = json.load(url)
+    
+    st.write(data)
     @st.cache
     def get_all_data():
         # URL of the sk_id API
         data_api_url = API_URL + "all_data/"
         # Requesting the API and saving the response
-        response = urllib.urlopen(data_api_url)
+        response = requests.get(id_api_url)
         # Convert from JSON format to Python dict
         content = json.loads(response.content.read())  #
         # pd.DataFrame(content['shap_val_cust'].values())
@@ -75,7 +80,7 @@ def main():
         # Requesting the API and saving the response
         response = requests.get(id_api_url)
         # Convert from JSON format to Python dict
-        content = json.loads(response.content)
+        content = json.loads(response.content.decode('utf-8'))
         # Getting the values of "ID" from the content
         id_customers = pd.Series(content['data']).values
         return id_customers
