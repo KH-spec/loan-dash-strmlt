@@ -52,8 +52,15 @@ def main():
     id_api_url = API_URL + "id/"
     response = requests.get(id_api_url)
     st.write(response)
+    if response.status_code == 200:
+        rp = response.json()
+    else:
+        print("Error from server: " + str(response.content))
     content = json.loads(response.content)
     st.write(content)
+    
+    
+    
     #local test api : http://127.0.0.1:5000/app/id/
     
     @st.cache    
