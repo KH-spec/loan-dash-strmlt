@@ -57,7 +57,8 @@ def main():
         # Requesting the API and saving the response
         response = requests.get(id_api_url)
         # Convert from JSON format to Python dict
-        content = json.loads(response.content.decode('utf-8'))
+        st.write(response)
+        content = json.loads(response.content)
         # Getting the values of "ID" from the content
         id_customers = pd.Series(content['data']).values
         return id_customers
