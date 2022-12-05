@@ -52,6 +52,8 @@ def main():
     id_api_url = API_URL + "id/"
     response = requests.get(id_api_url)
     st.write(response)
+    data = response.text
+    st.write(data)
     if response.status_code == 200:
         rp = response.json()
     else:
