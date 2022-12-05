@@ -50,7 +50,7 @@ def main():
     #                          list of ids customers
     # --------------------------------------------------------------------------------------------------
     data_api_url = API_URL + "all_data/"
-    response = requests.get(id_api_url)
+    response = requests.get(data_api_url)
     content = json.loads(response.content.read())  #
     st.write(content)
     @st.cache
