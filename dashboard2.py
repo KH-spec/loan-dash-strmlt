@@ -73,14 +73,15 @@ def main():
         # URL of the sk_id API
         data_api_url = API_URL + "all_data/"
         # Requesting the API and saving the response
-        response = requests.get(id_api_url)
+        response = requests.get(data_api_url)
         # Convert from JSON format to Python dict
-        content = json.loads(response.content.read())  #
+        content = json.loads(response.content.decode('utf-8'))  #
         # pd.DataFrame(content['shap_val_cust'].values())
-        X_test = pd.DataFrame(content['X_test'])
-        y_test = pd.Series(content['y_test'])  
+        X_test = pd.DataFrame(content['X_test'])  # Results contain the required data
+        y_test = pd.Series(content['y_test'])  # Results contain the required data
         
         return X_test, y_test
+        
     X_test, y_test = get_all_data()
 
     
