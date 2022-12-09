@@ -69,7 +69,7 @@ def main():
     # --------------------------------------------------------------------------------------------------
     data_api_url = API_URL + "all_data/"
     response = requests.get(data_api_url)
-    content = json.loads(response.content.read())  #
+    content = json.loads(response.content)  #
     st.write(content)
     @st.cache
     def get_all_data():
