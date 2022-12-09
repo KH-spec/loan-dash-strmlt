@@ -24,7 +24,7 @@ def main():
    
     #MLFLOW_URI = 'http://192.168.1.86:8501'
     #API_URL = "http://127.0.0.1:5000/app/"
-    API_URL = 'https://kh-spec-loan-dash-strmlt-dashboard2-7rh01b.streamlit.app/'
+    API_URL = 'https://appsapiflask.herokuapp.com/app/'
     
    
     # Display the title
@@ -49,22 +49,8 @@ def main():
     # --------------------------------------------------------------------------------------------------
     #                          list of ids customers
     # --------------------------------------------------------------------------------------------------  
-    id_api_url = API_URL + "id/"
-    response = requests.get(id_api_url)
-    st.write(response)
-    data = response.text
-    st.write(data)
-    if response.status_code == 200:
-        rp = response.json()
-    else:
-        print("Error from server: " + str(response.content))
-    content = json.loads(response.content)
-    st.write(content)
-    
-    
-    
+   
     #local test api : http://127.0.0.1:5000/app/id/
-    
     @st.cache    
     def get_id_list():
         # URL of the sk_id API
@@ -72,7 +58,6 @@ def main():
         # Requesting the API and saving the response
         response = requests.get(id_api_url)
         # Convert from JSON format to Python dict
-        
         content = json.loads(response.content)
         # Getting the values of "ID" from the content
         id_customers = pd.Series(content['data']).values
