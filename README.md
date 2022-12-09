@@ -10,7 +10,7 @@ Dashboard Streamlit de scoring déployé sur serveurs Streamlit hébergé par he
 
 Le Dashboard est visible en cliquant sur le lien suivant :
 
-https://bit.ly/LoanDashboardStreamlit
+https://kh-spec-loan-dash-strmlt-dashboard2-7rh01b.streamlit.app/
 
 La démo est visible en cliquant sur le lien suivant :
 
