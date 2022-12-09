@@ -67,10 +67,7 @@ def main():
     # --------------------------------------------------------------------------------------------------
     #                          list of ids customers
     # --------------------------------------------------------------------------------------------------
-    data_api_url = API_URL + "all_data/"
-    response = requests.get(data_api_url)
-    content = json.loads(response.content)  #
-    st.write(content)
+    
     @st.cache
     def get_all_data():
         # URL of the sk_id API
@@ -85,7 +82,7 @@ def main():
         
         return X_test, y_test
     X_test, y_test = get_all_data()
-    st.write(X_test)
+
     
     # --------------------------------------------------------------------------------------------------
     #                          Selected cust_data
